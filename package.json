@@ -1,0 +1,19 @@
+{
+  "name": "y",
+  "version": "0.0.1",
+  "description": "Server that decodes and routes socket traffic for the real-time text editor.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riojack/flint.git"
+  },
+  "author": "riojack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/riojack/flint/issues"
+  },
+  "homepage": "https://github.com/riojack/flint#readme"
+}
