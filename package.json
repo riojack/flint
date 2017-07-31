@@ -4,7 +4,8 @@
   "description": "Server that decodes and routes socket traffic for the real-time text editor.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "nuke": "npm cache clean && rm -r ./node_modules/*"
   },
   "repository": {
     "type": "git",
