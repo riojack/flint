@@ -1,2 +1,2 @@
---compilers jsx:babel-register
 --reporter progress
+--recursive
