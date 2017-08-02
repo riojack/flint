@@ -59,7 +59,7 @@ describe('Asking for 4-character secret', () => {
     }, safetyTimeout);
   });
 
-  it('should do the needful', (done) => {
+  it('should generate a new secret on request', (done) => {
     sock.on_receive('secret reply', (msg) => {
       expect(msg).to.have.length(4);
 
