@@ -16,7 +16,8 @@ const {spawnServerUnderTest} = require('./server_helper'),
   };
 
 describe('Logging in, getting secret, sending text, and logging out', () => {
-  let server, sock;
+  let server, sock,
+    secret;
 
   before((done) => {
     server = spawnServerUnderTest(cmd, args, opts);
@@ -67,5 +68,42 @@ describe('Logging in, getting secret, sending text, and logging out', () => {
     });
 
     sock.send('username.register.request', {username: 'billybob'});
+  });
+
+  it('I ask for a secret', (done) => {
+    sock.on_receive('secret reply', (secretReply) => {
+      expect(secretReply).to.have.length(4);
+
+      secret = secretReply;
+
+      done();
+    });
+
+    sock.send('secret request', 'bark');
+  });
+
+  it('I send text and get confirmation back', (done) => {
+    const fileToEdit = '~/foo/bar/Baz.java',
+      lineToChange = 151,
+      textToSend = 'the helicopter\'s rotors thundered through the starry night';
+    sock.on_receive('session.editor.text.line.reply', (textConfirm) => {
+      expect(textConfirm).to.have.property('file')
+        .that.equals(fileToEdit);
+
+      expect(textConfirm).to.have.property('line')
+        .that.equals(lineToChange);
+
+      expect(textConfirm).to.have.property('text')
+        .that.equals(textToSend);
+
+      done();
+    });
+
+    sock.send('session.editor.text.line.push', {
+      secret: secret,
+      file: fileToEdit,
+      line: lineToChange,
+      text: textToSend
+    });
   });
 });
