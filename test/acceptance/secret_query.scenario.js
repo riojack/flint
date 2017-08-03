@@ -20,7 +20,7 @@ describe('Asking for 4-character secret', () => {
 
   beforeEach((done) => {
     server = spawnServerUnderTest(cmd, args, opts);
-    sock = buildAndConnectOn(4001, true);
+    sock = buildAndConnectOn(4001);
 
     setTimeout(() => {
       expect(server.proc_running_normally, 'expected the server to be running correctly')
@@ -67,5 +67,23 @@ describe('Asking for 4-character secret', () => {
     });
 
     sock.send('secret request', 'bark');
+  });
+
+  it('should return the current secret when I query for its status', (done) => {
+    let mySecret;
+    sock.on_receive('secret reply', (secret) => {
+      mySecret = secret;
+    });
+
+    sock.on_receive('secret status reply', (secretStatus) => {
+      expect(secretStatus).to.have.property('secret');
+      expect(secretStatus.secret).to.equal(mySecret);
+
+      done();
+    });
+
+    sock.send('secret request', 'meow');
+
+    sock.send('secret status request', 'moo');
   });
 });

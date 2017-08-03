@@ -10,8 +10,13 @@ io.on('connect', (socket) => {
   });
 
   socket.on('secret request', () => {
-    console.log('got message');
     socket.emit('secret reply', 'abcd');
+  });
+
+  socket.on('secret status request', () => {
+    socket.emit('secret status reply', {
+      secret: 'abcd'
+    });
   });
 });
 
