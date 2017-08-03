@@ -18,6 +18,10 @@ io.on('connect', (socket) => {
       secret: 'abcd'
     });
   });
+
+  socket.on('username.register.request', (registerReq) => {
+    socket.emit('username.register.reply', {isValid: true});
+  });
 });
 
 app.get('/', (req, res) => res.send('Hello, world!'));
